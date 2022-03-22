@@ -17,12 +17,13 @@ dll_create(uint data_size)
 dll_node_t*
 dll_get_nth_node(doubly_linked_list_t* list, uint n)
 {
-    if (!list) {
-        fprintf(stderr,"List uninitialized");
+    DIE(!list, "List uninitialized");
+
+    if (n > list->size - 1) {
+        fprintf(stderr, "Node doesn't exist");
         return NULL;
     }
 
-    n = n % list->size;
     dll_node_t *node = list->head;
     for (uint i = 0; i < n; i++) {
         node = node->next;
@@ -49,10 +50,7 @@ dll_make_node(dll_node_t *next, dll_node_t *prev, const void *data, uint data_si
 void
 dll_add_nth_node(doubly_linked_list_t* list, uint n, const void* data)
 {
-    if (!list) {
-        fprintf(stderr,"List uninitialized");
-        return;
-    }
+    DIE(!list, "List uninitialized");
 
     if (n > list->size)
         n = list->size;
@@ -60,15 +58,12 @@ dll_add_nth_node(doubly_linked_list_t* list, uint n, const void* data)
     if (n == 0) {
         if (!list->head) {
             dll_node_t *new_node = dll_make_node(NULL, NULL, data, list->data_size);
-            new_node->next = new_node;
-            new_node->prev = new_node;
             list->size++;
             list->head = new_node;
             return;
         }
         dll_node_t *node = list->head;
         dll_node_t *new_node = dll_make_node(node, node->prev, data, list->data_size);
-        node->prev = new_node;
         list->size++;
         list->head = new_node;
         return;
@@ -76,18 +71,18 @@ dll_add_nth_node(doubly_linked_list_t* list, uint n, const void* data)
 
     dll_node_t *prev_node =  dll_get_nth_node(list, n - 1);
     dll_node_t *new_node = dll_make_node(prev_node->next, prev_node, data, list->data_size);
-    (prev_node->next)->prev = new_node;
-    prev_node->next = new_node;
+    if (prev_node->next)
+        (prev_node->next)->prev = new_node;
+    if (prev_node)
+        prev_node->next = new_node;
     list->size++;
 }
 
 dll_node_t*
 dll_remove_nth_node(doubly_linked_list_t* list, uint n)
 {
-    if (!list) {
-        fprintf(stderr,"List uninitialized");
-        return NULL;
-    }
+    DIE(!list, "List uninitialized");
+
     if (list->size == 0) {
         fprintf(stderr, "List is empty");
         return NULL;
@@ -102,8 +97,10 @@ dll_remove_nth_node(doubly_linked_list_t* list, uint n)
         n = list->size - 1;
     
     dll_node_t *node = dll_get_nth_node(list, n);
-    (node->prev)->next = node->next;
-    (node->next)->prev = node->prev;
+    if (node->prev)
+        (node->prev)->next = node->next;
+    if (node->next)
+        (node->next)->prev = node->prev;
 
     if (n == 0)
         list->head = node->next;
@@ -115,16 +112,14 @@ dll_remove_nth_node(doubly_linked_list_t* list, uint n)
 uint
 dll_get_size(doubly_linked_list_t* list)
 {
-    if (!list) {
-        fprintf(stderr,"List uninitialized");
-        return 0;
-    }
+    DIE(!list, "List uninitialized");
+    
     if (!list->head)
         return 0;
 
     dll_node_t *node = (list->head)->next;
     uint i = 1;
-    while (node != list->head) {
+    while (node) {
         node = node->next;
         i++;
     }
@@ -134,10 +129,7 @@ dll_get_size(doubly_linked_list_t* list)
 void
 dll_free(doubly_linked_list_t** pp_list)
 {
-    if (!(*pp_list)) {
-        fprintf(stderr,"List uninitialized");
-        return;
-    }
+    DIE(!(*pp_list), "List uninitialized");
 
     dll_node_t *node = (*pp_list)->head;
     for (uint i = 0; i < (*pp_list)->size; i++) {
@@ -150,4 +142,17 @@ dll_free(doubly_linked_list_t** pp_list)
 
     free(*pp_list);
     pp_list = NULL;
+}
+
+// Prints the values from node a to node b, using given function
+void
+dll_print_element(doubly_linked_list_t *list, uint a, uint b, void print_func(void *)) {
+    DIE(!list, "List uninitialized");
+
+    dll_node_t *node = dll_get_nth_node(list, a);
+
+    for (uint i = a; i <= b && node != NULL; i++) {
+        print_func(node->data);
+        node = node->next;
+    }
 }
