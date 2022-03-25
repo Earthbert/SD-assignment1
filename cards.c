@@ -30,7 +30,7 @@ print_card (void *data) {
 void
 add_cards (doubly_linked_list_t *deck, uint nr_cards) {
 	card input_card;
-	int num;
+	int num = 0;
 	char symbol[69];
 
 	for (uint i = 0 ; i < nr_cards;) {
@@ -143,31 +143,34 @@ void
 split_deck(doubly_linked_list_t *deck_list, uint deck_index, uint split_index) {
 	if (deck_index >= deck_list->size)
 		DECK_INDEX_OUT_OF_BOUNDS
+
 	doubly_linked_list_t *deck_split = dll_get_nth_node(deck_list, deck_index)->data;
 	if (split_index >= deck_split->size) {
 		CARD_INDEX_OUT_OF_BOUNDS(split_index)
 		return;
 	}
-	if (split_index == 0)
+
+	if (split_index == 0) {
+		printf("The deck %d was successfully split by index %d.\n", deck_index, split_index);
 		return;
+	}
 
 	doubly_linked_list_t new_deck;
 	new_deck.data_size = sizeof(card);
 	new_deck.head = NULL;
 	new_deck.size = 0;
+
 	dll_node_t *node = dll_get_nth_node(deck_split, split_index);
+
+	if (node->prev)
+		node->prev->next = NULL;
+	node->prev = NULL;
 	new_deck.head = node;
 	if (node->prev)
 		(node->prev)->next = NULL;
 	
 	new_deck.size = deck_split->size - split_index;
 	deck_split->size = split_index;
-
-	if (deck_split->size == 0) {
-		dll_node_t *removed_node = dll_remove_nth_node(deck_list, deck_index);
-		dll_free(removed_node->data);
-		free(removed_node);
-	}
 
 	dll_add_nth_node(deck_list, deck_index + 1, &new_deck);
 	printf("The deck %d was successfully split by index %d.\n", deck_index, split_index);
