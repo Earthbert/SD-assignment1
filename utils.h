@@ -21,4 +21,6 @@
         }                                                                      \
     } while (0)
 
+#define SWAP(x, y, T) do { T SWAP = x; x = y; y = SWAP; } while (0)
+
 #endif /* __UTILS_H_ */

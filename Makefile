@@ -1,18 +1,18 @@
-CFLAG = -Wall -Wextra -std=c99
+CFLAG = -Wall -Wextra -std=c99 -g
 
-all: main
+build: main
 
-main: main.o Linkedlist.o cards.o
-	gcc	${CFLAG} -o $@ $?
+main: main.o cards.o Linkedlist.o
+	gcc	${CFLAG} -o decks_manager $?
 
 main.o: main.c
-	gcc ${CFLAG} -c -o $@ main.c
-
-Linkedlist.o: Linkedlist.c
-	gcc ${CFLAG} -c -o $@ Linkedlist.c
+	gcc ${CFLAG} -c -o $@ $?
 
 cards.o: cards.c
-	gcc ${CFLAG} -c -o $@ cards.c
+	gcc ${CFLAG} -c -o $@ $?
+
+Linkedlist.o: Linkedlist.c
+	gcc ${CFLAG} -c -o $@ $?
 
 clean:
-	rm -f *.o main
+	rm -f *.o decks_manager

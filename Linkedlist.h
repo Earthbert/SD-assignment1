@@ -23,9 +23,6 @@ doubly_linked_list_t*
 dll_create(uint data_size);
 
 dll_node_t*
-dll_make_node(dll_node_t *next, dll_node_t *prev, const void *data, uint data_size);
-
-dll_node_t*
 dll_get_nth_node(doubly_linked_list_t* list, uint n);
 
 void
@@ -38,6 +35,18 @@ uint
 dll_get_size(doubly_linked_list_t* list);
 
 void
-dll_free(doubly_linked_list_t** pp_list);
+dll_free(doubly_linked_list_t* pp_list);
+
+void
+dll_print_element(doubly_linked_list_t *list, uint a, uint b, void print_func(void *));
+
+doubly_linked_list_t*
+dll_merge_lists(doubly_linked_list_t *list1, doubly_linked_list_t *list2);
+
+void
+dll_reverse_list(doubly_linked_list_t *list);
+
+void
+dll_sort_list(doubly_linked_list_t *list, int compare_func(void *, void *));
 
 #endif // LINKEDLIST_H
