@@ -2,7 +2,7 @@ CFLAG = -Wall -Wextra -std=c99 -g
 
 build: main
 
-main: main.o cards.o Linkedlist.o
+main: main.o cards.o Linkedlist.o input_functions.o
 	gcc	${CFLAG} -o decks_manager $?
 
 main.o: main.c
@@ -12,6 +12,9 @@ cards.o: cards.c
 	gcc ${CFLAG} -c -o $@ $?
 
 Linkedlist.o: Linkedlist.c
+	gcc ${CFLAG} -c -o $@ $?
+
+input_functions.o: input_functions.c
 	gcc ${CFLAG} -c -o $@ $?
 
 clean:

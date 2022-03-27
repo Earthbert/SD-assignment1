@@ -23,7 +23,7 @@ print_card (void *data);
 void
 add_cards (doubly_linked_list_t *deck, uint nr_cards);
 
-void
+int
 del_card (doubly_linked_list_t *deck_list, uint deck_index, uint card_index);
 
 void
@@ -35,7 +35,7 @@ merge_decks (doubly_linked_list_t *deck_list, uint index1, uint index2);
 int
 compare_cards (void *p_card1, void *p_card2);
 
-void
+int
 split_deck(doubly_linked_list_t *deck_list, uint deck_index, uint split_index);
 
 #endif // CARDS_H
