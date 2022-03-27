@@ -83,6 +83,7 @@ del_card (doubly_linked_list_t *deck_list, uint deck_index, uint card_index) {
 		free(removed_node->data);
 		free(removed_node);
 	}
+	printf("The card was successfully deleted from deck %d.\n", deck_index);
 }
 
 void

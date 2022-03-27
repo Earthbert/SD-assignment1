@@ -6,51 +6,65 @@
 #include "utils.h"
 #include "cards.h"
 
-void find_nth_word(char *word, char *line, int n) {
-    char *start;
-    char *end;
-    int i = 0;
-    while (n) {
-        start = NULL;
-        end = NULL;
-        while (i < (int)strlen(line) && !end) {
-            if (line[i] != ' ' && !start) {
-                start = &line[i];
-            } else if (line[i + 1] == ' ' || line[i + 1] == '\0') {
-                end = &line[i];
-            }
-            i++;
-        }
-        n--;
-    }
-    if (start && end) {
-        i = 0;
-        while (start <= end) {
-            word[i] = *start;
-            start++;
-            i++;
-        }
-        word[i] = '\0';
-		return;
-    }
-	word[0] = '\0';
+// void find_nth_word(char *word, char *line, int n) {
+//     char *start;
+//     char *end;
+//     int i = 0;
+//     while (n) {
+//         start = NULL;
+//         end = NULL;
+//         while (i < (int)strlen(line) && !end) {
+//             if (line[i] != ' ' && !start) {
+//                 start = &line[i];
+//             }
+// 			if (line[i + 1] == ' ' && line) {
+//                 end = &line[i];
+//             }
+//             i++;
+//         }
+//         n--;
+//     }
+//     if (start && end) {
+//         i = 0;
+//         while (start <= end) {
+//             word[i] = *start;
+//             start++;
+//             i++;
+//         }
+//         word[i] = '\0';
+// 		return;
+//     }
+// 	word[0] = '\0';
+// }
+
+int word_count(char *line)
+{
+	unsigned int count = 0;
+
+	for (int i = 0; i < (int)strlen(line); i++) {
+		if (line[i] != ' ' && line[i] != '\n') {
+			while (i < (int)strlen(line) && line[i] != ' ' && line[i] != '\n')
+				i++;
+			count++;
+		}
+	}
+	return count;
 }
 
 
 void add_deck_input(doubly_linked_list_t *deck_list) {
 	char line[MAX_STRING_SIZE];
-	char word[MAX_STRING_SIZE];
+	char *word;
 	uint nr_cards;
 
 	fgets(line, MAX_STRING_SIZE, stdin);
-	printf("%s", line);
-	find_nth_word(word, line, 1);
-	nr_cards = atoi(word);
-	find_nth_word(word, line, 2);
-	if (strlen(word)) {
-		INVALID_COMMAND
+	if (word_count(line) != 1) {
+		INVALID_COMMAND;
 		return;
 	}
+
+	word = strtok(line, " ");
+	nr_cards = atoi(word);
 
 	doubly_linked_list_t deck;
 	deck.data_size = sizeof(card);
@@ -63,17 +77,17 @@ void add_deck_input(doubly_linked_list_t *deck_list) {
 
 void delete_deck_input(doubly_linked_list_t *deck_list) {
 	char line[MAX_STRING_SIZE];
-	char word[MAX_STRING_SIZE];
-
+	char *word;
 	uint deck_index;
+
 	fgets(line, MAX_STRING_SIZE, stdin);
-	find_nth_word(word, line, 1);
-	deck_index = atoi(word);
-	find_nth_word(word, line, 2);
-	if (strlen(word)) {
-		INVALID_COMMAND
+	if (word_count(line) != 1) {
+		INVALID_COMMAND;
 		return;
 	}
+
+	word = strtok(line, " ");
+	deck_index = atoi(word);
 
 	if (deck_index >= deck_list->size) {
 		DECK_INDEX_OUT_OF_BOUNDS
@@ -88,19 +102,20 @@ void delete_deck_input(doubly_linked_list_t *deck_list) {
 
 void delete_card_input(doubly_linked_list_t *deck_list) {
 	char line[MAX_STRING_SIZE];
-	char word[MAX_STRING_SIZE];
+	char *word;
 	uint deck_index, card_index;
 
 	fgets(line, MAX_STRING_SIZE, stdin);
-	find_nth_word(word, line, 1);
-	deck_index = atoi(word);
-	find_nth_word(word, line, 2);
-	card_index = atoi(word);
-	find_nth_word(word, line, 3);
-	if (strlen(word)) {
-		INVALID_COMMAND
+	if (word_count(line) != 2) {
+		INVALID_COMMAND;
 		return;
 	}
+
+	
+	word = strtok(line, " ");
+	deck_index = atoi(word);
+	word = strtok(NULL, " ");
+	card_index = atoi(word);
 	
 	if (deck_index >= deck_list->size) {
 		DECK_INDEX_OUT_OF_BOUNDS
@@ -111,19 +126,20 @@ void delete_card_input(doubly_linked_list_t *deck_list) {
 
 void add_cards_input(doubly_linked_list_t *deck_list) {
 	char line[MAX_STRING_SIZE];
-	char word[MAX_STRING_SIZE];
+	char *word;
 	uint deck_index, nr_cards;
 
 	fgets(line, MAX_STRING_SIZE, stdin);
-	find_nth_word(word, line, 1);
-	deck_index = atoi(word);
-	find_nth_word(word, line, 2);
-	nr_cards = atoi(word);
-	find_nth_word(word, line, 3);
-	if (strlen(word)) {
-		INVALID_COMMAND
+	if (word_count(line) != 2) {
+		INVALID_COMMAND;
 		return;
 	}
+
+	word = strtok(line, " ");
+	deck_index = atoi(word);
+	word = strtok(NULL, " ");
+	nr_cards = atoi(word);
+
 	if (deck_index >= deck_list->size) {
 		DECK_INDEX_OUT_OF_BOUNDS
 		return;
@@ -135,17 +151,17 @@ void add_cards_input(doubly_linked_list_t *deck_list) {
 
 void deck_len(doubly_linked_list_t *deck_list) {
 	char line[MAX_STRING_SIZE];
-	char word[MAX_STRING_SIZE];
-
+	char *word;
 	uint deck_index;
+
 	fgets(line, MAX_STRING_SIZE, stdin);
-	find_nth_word(word, line, 1);
-	deck_index = atoi(word);
-	find_nth_word(word, line, 2);
-	if (strlen(word)) {
-		INVALID_COMMAND
+	if (word_count(line) != 1) {
+		INVALID_COMMAND;
 		return;
 	}
+
+	word = strtok(line, " ");
+	deck_index = atoi(word);
 
 	if (deck_index >= deck_list->size) {
 		DECK_INDEX_OUT_OF_BOUNDS
@@ -157,17 +173,17 @@ void deck_len(doubly_linked_list_t *deck_list) {
 
 void shuffle_deck_input(doubly_linked_list_t *deck_list) {
 	char line[MAX_STRING_SIZE];
-	char word[MAX_STRING_SIZE];
-
+	char *word;
 	uint deck_index;
+
 	fgets(line, MAX_STRING_SIZE, stdin);
-	find_nth_word(word, line, 1);
-	deck_index = atoi(word);
-	find_nth_word(word, line, 2);
-	if (strlen(word)) {
-		INVALID_COMMAND
+	if (word_count(line) != 1) {
+		INVALID_COMMAND;
 		return;
 	}
+
+	word = strtok(line, " ");
+	deck_index = atoi(word);
 
 	if (deck_index >= deck_list->size) {
 		DECK_INDEX_OUT_OF_BOUNDS
@@ -180,19 +196,18 @@ void shuffle_deck_input(doubly_linked_list_t *deck_list) {
 
 void merge_decks_input(doubly_linked_list_t *deck_list) {
 	char line[MAX_STRING_SIZE];
-	char word[MAX_STRING_SIZE];
+	char *word;
 	uint deck_index_1, deck_index_2;
 
 	fgets(line, MAX_STRING_SIZE, stdin);
-	find_nth_word(word, line, 1);
-	deck_index_1 = atoi(word);
-	find_nth_word(word, line, 2);
-	deck_index_2 = atoi(word);
-	find_nth_word(word, line, 3);
-	if (strlen(word)) {
+	if (word_count(line) != 2) {
 		INVALID_COMMAND
 		return;
 	}
+	word = strtok(line, " ");
+	deck_index_1 = atoi(word);
+	word = strtok(NULL, " ");
+	deck_index_2 = atoi(word);
 
 	if (deck_index_1 >= deck_list->size || deck_index_2 >= deck_list->size) {
 		DECK_INDEX_OUT_OF_BOUNDS
@@ -204,19 +219,18 @@ void merge_decks_input(doubly_linked_list_t *deck_list) {
 
 void split_deck_input(doubly_linked_list_t *deck_list) {
 	char line[MAX_STRING_SIZE];
-	char word[MAX_STRING_SIZE];
+	char *word;
 	uint deck_index, index_split;
 	
 	fgets(line, MAX_STRING_SIZE, stdin);
-	find_nth_word(word, line, 1);
-	deck_index = atoi(word);
-	find_nth_word(word, line, 2);
-	index_split = atoi(word);
-	find_nth_word(word, line, 3);
-	if (strlen(word)) {
+	if (word_count(line) != 2) {
 		INVALID_COMMAND
 		return;
 	}
+	word = strtok(line, " ");
+	deck_index = atoi(word);
+	word = strtok(NULL, " ");
+	index_split = atoi(word);
 
 	if (deck_index >= deck_list->size) {
 		DECK_INDEX_OUT_OF_BOUNDS
@@ -227,17 +241,16 @@ void split_deck_input(doubly_linked_list_t *deck_list) {
 
 void reverse_input(doubly_linked_list_t *deck_list) {
 	char line[MAX_STRING_SIZE];
-	char word[MAX_STRING_SIZE];
+	char *word;
 	uint deck_index;
 
 	fgets(line, MAX_STRING_SIZE, stdin);
-	find_nth_word(word, line, 1);
-	deck_index = atoi(word);
-	find_nth_word(word, line, 2);
-	if (strlen(word)) {
+	if (word_count(line) != 1) {
 		INVALID_COMMAND
 		return;
 	}
+	word = strtok(line, " ");
+	deck_index = atoi(word);
 
 	doubly_linked_list_t *deck = dll_get_nth_node(deck_list, deck_index)->data;
 	dll_reverse_list(deck);
@@ -246,17 +259,16 @@ void reverse_input(doubly_linked_list_t *deck_list) {
 
 void show_deck_input(doubly_linked_list_t *deck_list) {
 	char line[MAX_STRING_SIZE];
-	char word[MAX_STRING_SIZE];
+	char *word;
 	uint deck_index;
 
 	fgets(line, MAX_STRING_SIZE, stdin);
-	find_nth_word(word, line, 1);
-	deck_index = atoi(word);
-	find_nth_word(word, line, 2);
-	if (strlen(word)) {
+	if (word_count(line) != 1) {
 		INVALID_COMMAND
 		return;
 	}
+	word = strtok(line, " ");
+	deck_index = atoi(word);
 
 	if (deck_index >= deck_list->size) {
 		DECK_INDEX_OUT_OF_BOUNDS
@@ -270,11 +282,9 @@ void show_deck_input(doubly_linked_list_t *deck_list) {
 
 void show_all_decks(doubly_linked_list_t *deck_list) {
 	char line[MAX_STRING_SIZE];
-	char word[MAX_STRING_SIZE];
 
 	fgets(line, MAX_STRING_SIZE, stdin);
-	find_nth_word(word, line, 1);
-	if (strlen(word)) {
+	if (word_count(line) != 0) {
 		INVALID_COMMAND
 		return;
 	}
@@ -290,17 +300,16 @@ void show_all_decks(doubly_linked_list_t *deck_list) {
 
 void sort_deck_input(doubly_linked_list_t *deck_list) {
 	char line[MAX_STRING_SIZE];
-	char word[MAX_STRING_SIZE];
+	char *word;
 	uint deck_index;
 
 	fgets(line, MAX_STRING_SIZE, stdin);
-	find_nth_word(word, line, 1);
-	deck_index = atoi(word);
-	find_nth_word(word, line, 2);
-	if (strlen(word)) {
+	if (word_count(line) != 1) {
 		INVALID_COMMAND
 		return;
 	}
+	word = strtok(line, " ");
+	deck_index = atoi(word);
 
 	if (deck_index >= deck_list->size) {
 		DECK_INDEX_OUT_OF_BOUNDS
@@ -314,12 +323,9 @@ void sort_deck_input(doubly_linked_list_t *deck_list) {
 
 void exit_program(doubly_linked_list_t *deck_list) {
 	char line[MAX_STRING_SIZE];
-	char word[MAX_STRING_SIZE];
-	uint deck_index;
 
 	fgets(line, MAX_STRING_SIZE, stdin);
-	find_nth_word(word, line, 1);
-	if (strlen(word)) {
+	if (word_count(line) != 0) {
 		INVALID_COMMAND
 		return;
 	}

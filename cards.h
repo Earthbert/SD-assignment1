@@ -2,10 +2,11 @@
 #define CARDS_H
 
 // Error messages
-#define DECK_INDEX_OUT_OF_BOUNDS fprintf(stderr, "The provided index is out of bounds for the deck list.\n");
-#define CARD_INDEX_OUT_OF_BOUNDS(index) fprintf(stderr, "The provided index is out of bounds for deck %d.\n", index);
-#define INVALID_CARD fprintf(stderr, "The provided card is not a valid one.\n");
+#define DECK_INDEX_OUT_OF_BOUNDS printf("The provided index is out of bounds for the deck list.\n");
+#define CARD_INDEX_OUT_OF_BOUNDS(index) printf("The provided index is out of bounds for deck %d.\n", index);
+#define INVALID_CARD printf("The provided card is not a valid one.\n");
 #define INVALID_COMMAND printf("Invalid command. Please try again.\n");
+#define MAX_STRING_SIZE 69
 
 typedef unsigned int uint;
 
