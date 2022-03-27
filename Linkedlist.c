@@ -17,10 +17,10 @@ dll_create(uint data_size)
 dll_node_t*
 dll_get_nth_node(doubly_linked_list_t* list, uint n)
 {
-    DIE(!list, "List uninitialized");
+    DIE(!list, "List uninitialized\n");
 
     if (n >= list->size) {
-        fprintf(stderr, "Node doesn't exist");
+        fprintf(stderr, "Node doesn't exist\n");
         return NULL;
     }
 
@@ -40,7 +40,7 @@ dll_make_node(dll_node_t *next, dll_node_t *prev, const void *data, uint data_si
     node->next = next;
     node->prev = prev;
     node->data = calloc(1, data_size);
-    DIE(!node->data, "malloc error");
+    DIE(!node->data, "malloc error\n");
 
     memcpy(node->data, data, data_size);
 
@@ -50,7 +50,7 @@ dll_make_node(dll_node_t *next, dll_node_t *prev, const void *data, uint data_si
 void
 dll_add_nth_node(doubly_linked_list_t* list, uint n, const void* data)
 {
-    DIE(!list, "List uninitialized");
+    DIE(!list, "List uninitialized\n");
 
     if (n > list->size)
         n = list->size;
@@ -81,10 +81,10 @@ dll_add_nth_node(doubly_linked_list_t* list, uint n, const void* data)
 dll_node_t*
 dll_remove_nth_node(doubly_linked_list_t* list, uint n)
 {
-    DIE(!list, "List uninitialized");
+    DIE(!list, "List uninitialized\n");
 
     if (list->size == 0) {
-        fprintf(stderr, "List is empty");
+        fprintf(stderr, "List is empty\n");
         return NULL;
     }
     if (list->size == 1) {
@@ -112,7 +112,7 @@ dll_remove_nth_node(doubly_linked_list_t* list, uint n)
 uint
 dll_get_size(doubly_linked_list_t* list)
 {
-    DIE(!list, "List uninitialized");
+    DIE(!list, "List uninitialized\n");
 
     dll_node_t *node = (list->head)->next;
     uint i = 1;
@@ -126,7 +126,7 @@ dll_get_size(doubly_linked_list_t* list)
 void
 dll_free(doubly_linked_list_t* list)
 {
-    DIE(!(list), "List uninitialized");
+    DIE(!(list), "List uninitialized\n");
 
     dll_node_t *node = list->head;
     for (uint i = 0; i < list->size; i++) {
@@ -141,7 +141,7 @@ dll_free(doubly_linked_list_t* list)
 // Prints the values from node a to node b, using given function
 void
 dll_print_element(doubly_linked_list_t *list, uint a, uint b, void print_func(void *)) {
-    DIE(!list, "List uninitialized");
+    DIE(!list, "List uninitialized\n");
 
     dll_node_t *node = dll_get_nth_node(list, a);
 
@@ -153,8 +153,8 @@ dll_print_element(doubly_linked_list_t *list, uint a, uint b, void print_func(vo
 
 doubly_linked_list_t *
 dll_merge_lists(doubly_linked_list_t *list1, doubly_linked_list_t *list2) {
-    DIE(!list1, "List uninitialized");
-    DIE(!list2, "List uninitialized");
+    DIE(!list1, "List uninitialized\n");
+    DIE(!list2, "List uninitialized\n");
 
     doubly_linked_list_t *new_list = dll_create(list1->data_size);
 
@@ -177,7 +177,7 @@ dll_merge_lists(doubly_linked_list_t *list1, doubly_linked_list_t *list2) {
 
 void
 dll_reverse_list(doubly_linked_list_t *list) {
-    DIE(!list, "List uninitialized");
+    DIE(!list, "List uninitialized\n");
 
     dll_node_t *node = list->head;
 
@@ -192,7 +192,7 @@ dll_reverse_list(doubly_linked_list_t *list) {
 
 void
 dll_sort_list(doubly_linked_list_t *list, int compare_func(void *, void *)) {
-    DIE(!list, "List uninitialized");
+    DIE(!list, "List uninitialized\n");
 
     dll_node_t *node = list->head;
     while (node != NULL && node->next != NULL) {

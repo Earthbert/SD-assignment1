@@ -6,37 +6,6 @@
 #include "utils.h"
 #include "cards.h"
 
-// void find_nth_word(char *word, char *line, int n) {
-//     char *start;
-//     char *end;
-//     int i = 0;
-//     while (n) {
-//         start = NULL;
-//         end = NULL;
-//         while (i < (int)strlen(line) && !end) {
-//             if (line[i] != ' ' && !start) {
-//                 start = &line[i];
-//             }
-// 			if (line[i + 1] == ' ' && line) {
-//                 end = &line[i];
-//             }
-//             i++;
-//         }
-//         n--;
-//     }
-//     if (start && end) {
-//         i = 0;
-//         while (start <= end) {
-//             word[i] = *start;
-//             start++;
-//             i++;
-//         }
-//         word[i] = '\0';
-// 		return;
-//     }
-// 	word[0] = '\0';
-// }
-
 int word_count(char *line)
 {
 	unsigned int count = 0;
@@ -51,7 +20,6 @@ int word_count(char *line)
 	return count;
 }
 
-
 void add_deck_input(doubly_linked_list_t *deck_list) {
 	char line[MAX_STRING_SIZE];
 	char *word;
@@ -59,12 +27,12 @@ void add_deck_input(doubly_linked_list_t *deck_list) {
 
 	fgets(line, MAX_STRING_SIZE, stdin);
 	if (word_count(line) != 1) {
-		INVALID_COMMAND;
+		INVALID_COMMAND
 		return;
 	}
-
 	word = strtok(line, " ");
 	nr_cards = atoi(word);
+
 
 	doubly_linked_list_t deck;
 	deck.data_size = sizeof(card);
@@ -110,7 +78,6 @@ void delete_card_input(doubly_linked_list_t *deck_list) {
 		INVALID_COMMAND;
 		return;
 	}
-
 	
 	word = strtok(line, " ");
 	deck_index = atoi(word);
@@ -131,10 +98,9 @@ void add_cards_input(doubly_linked_list_t *deck_list) {
 
 	fgets(line, MAX_STRING_SIZE, stdin);
 	if (word_count(line) != 2) {
-		INVALID_COMMAND;
+		INVALID_COMMAND
 		return;
 	}
-
 	word = strtok(line, " ");
 	deck_index = atoi(word);
 	word = strtok(NULL, " ");
@@ -251,6 +217,11 @@ void reverse_input(doubly_linked_list_t *deck_list) {
 	}
 	word = strtok(line, " ");
 	deck_index = atoi(word);
+
+	if (deck_index >= deck_list->size) {
+		DECK_INDEX_OUT_OF_BOUNDS
+		return;
+	}
 
 	doubly_linked_list_t *deck = dll_get_nth_node(deck_list, deck_index)->data;
 	dll_reverse_list(deck);
@@ -405,6 +376,7 @@ int main () {
 			exit_program(deck_list);
 			break;
 		}
+		fgets(command, MAX_STRING_SIZE, stdin);
 		INVALID_COMMAND
 	}
 	return 0;

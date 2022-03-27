@@ -69,7 +69,7 @@ del_card (doubly_linked_list_t *deck_list, uint deck_index, uint card_index) {
 	doubly_linked_list_t *deck = dll_get_nth_node(deck_list, deck_index)->data;
 
 	if (card_index >= deck->size) {
-		CARD_INDEX_OUT_OF_BOUNDS(card_index)
+		CARD_INDEX_OUT_OF_BOUNDS(deck_index)
 		return;
 	}
 
