@@ -1,5 +1,6 @@
-#ifndef INPUT_FUNCTIONS_H
-#define INPUT_FUNCTIONS_H
+// Copyright 2022 Daraban Albert-Timotei
+#ifndef CHECKER_INPUT_FUNCTIONS_H_
+#define CHECKER_INPUT_FUNCTIONS_H_
 
 void add_deck_input(doubly_linked_list_t *deck_list);
 
@@ -31,4 +32,4 @@ void deck_number(doubly_linked_list_t *deck_list);
 
 void exit_program(doubly_linked_list_t *deck_list);
 
-#endif
+#endif  // CHECKER_INPUT_FUNCTIONS_H_

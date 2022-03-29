@@ -1,5 +1,6 @@
-#ifndef LINKEDLIST_H
-#define LINKEDLIST_H
+// Copyright 2022 Daraban Albert-Timotei
+#ifndef CHECKER_LINKEDLIST_H_
+#define CHECKER_LINKEDLIST_H_
 
 typedef unsigned int uint;
 
@@ -38,7 +39,8 @@ void
 dll_free(doubly_linked_list_t* pp_list);
 
 void
-dll_print_element(doubly_linked_list_t *list, uint a, uint b, void print_func(void *));
+dll_print_element(doubly_linked_list_t *list, uint a, uint b,
+void print_func(void *));
 
 doubly_linked_list_t*
 dll_merge_lists(doubly_linked_list_t *list1, doubly_linked_list_t *list2);
@@ -49,4 +51,4 @@ dll_reverse_list(doubly_linked_list_t *list);
 void
 dll_sort_list(doubly_linked_list_t *list, int compare_func(void *, void *));
 
-#endif // LINKEDLIST_H
+#endif  // CHECKER_LINKEDLIST_H_

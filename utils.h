@@ -1,11 +1,13 @@
+// Copyright 2022 Daraban Albert-Timotei
+
 /**
  * Useful structures/macros
  *
  * https://ocw.cs.pub.ro/courses/so/laboratoare/resurse/die
  */
 
-#ifndef __UTILS_H_
-#define __UTILS_H_
+#ifndef CHECKER_UTILS_H_
+#define CHECKER_UTILS_H_
 
 #include <errno.h>
 #include <stdio.h>
@@ -23,4 +25,4 @@
 
 #define SWAP(x, y, T) do { T SWAP = x; x = y; y = SWAP; } while (0)
 
-#endif /* __UTILS_H_ */
+#endif  // CHECKER_UTILS_H_

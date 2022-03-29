@@ -1,3 +1,4 @@
+// Copyright 2022 Daraban Albert-Timotei
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -7,7 +8,7 @@
 #include "cards.h"
 #include "input_functions.h"
 
-int main () {
+int main() {
 	doubly_linked_list_t *deck_list = dll_create(sizeof(doubly_linked_list_t));
 
 	char command[MAX_STRING_SIZE];
@@ -70,7 +71,7 @@ int main () {
 			exit_program(deck_list);
 			break;
 		}
-		fgets(command, MAX_STRING_SIZE, stdin);
+		fgets(command, MAX_STRING_SIZE, stdin);   // Sa citeasca pana la \n
 		INVALID_COMMAND
 	}
 	return 0;

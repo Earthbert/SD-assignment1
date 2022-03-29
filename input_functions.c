@@ -1,3 +1,4 @@
+// Copyright 2022 Daraban Albert-Timotei
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -7,6 +8,8 @@
 #include "cards.h"
 #include "input_functions.h"
 
+/* Utilizata la numararea de parametri pentru functile de input.
+*/
 int word_count(char *line)
 {
 	unsigned int count = 0;
@@ -20,6 +23,11 @@ int word_count(char *line)
 	}
 	return count;
 }
+
+/* Functii pentru fiecare comanda posibila, acestea vor verifica ca numarul de
+parametri este corect, vor inpartii parametri corect si dupa vor apela alte
+functii pentru rezolvara cerintei.
+*/
 
 void add_deck_input(doubly_linked_list_t *deck_list) {
 	char line[MAX_STRING_SIZE];
@@ -79,7 +87,7 @@ void delete_card_input(doubly_linked_list_t *deck_list) {
 		INVALID_COMMAND;
 		return;
 	}
-	
+
 	word = strtok(line, " ");
 	deck_index = atoi(word);
 	word = strtok(NULL, " ");
@@ -179,14 +187,15 @@ void merge_decks_input(doubly_linked_list_t *deck_list) {
 		return;
 	}
 	merge_decks(deck_list, deck_index_1, deck_index_2);
-	printf("The deck %d and the deck %d were successfully merged.\n", deck_index_1, deck_index_2);
+	printf("The deck %d and the deck %d were successfully merged.\n",
+	deck_index_1, deck_index_2);
 }
 
 void split_deck_input(doubly_linked_list_t *deck_list) {
 	char line[MAX_STRING_SIZE];
 	char *word;
 	uint deck_index, split_index;
-	
+
 	fgets(line, MAX_STRING_SIZE, stdin);
 	if (word_count(line) != 2) {
 		INVALID_COMMAND
@@ -203,7 +212,8 @@ void split_deck_input(doubly_linked_list_t *deck_list) {
 	}
 	int ret_val = split_deck(deck_list, deck_index, split_index);
 	if (ret_val == 0)
-		printf("The deck %d was successfully split by index %d.\n", deck_index, split_index);
+		printf("The deck %d was successfully split by index %d.\n",
+		deck_index, split_index);
 }
 
 void reverse_input(doubly_linked_list_t *deck_list) {

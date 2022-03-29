@@ -1,3 +1,4 @@
+// Copyright 2022 Daraban Albert-Timotei
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -5,6 +6,8 @@
 #include "Linkedlist.h"
 #include "utils.h"
 
+/* Creaza o lista dublu inlantuita
+*/
 doubly_linked_list_t*
 dll_create(uint data_size)
 {
@@ -14,6 +17,8 @@ dll_create(uint data_size)
     return list;
 }
 
+/* Returneaza al n-elea nod
+*/
 dll_node_t*
 dll_get_nth_node(doubly_linked_list_t* list, uint n)
 {
@@ -32,8 +37,11 @@ dll_get_nth_node(doubly_linked_list_t* list, uint n)
     return node;
 }
 
+/* Creaza nodul proriu zis
+*/
 dll_node_t*
-dll_make_node(dll_node_t *next, dll_node_t *prev, const void *data, uint data_size) {
+dll_make_node(dll_node_t *next, dll_node_t *prev, const void *data,
+uint data_size) {
     dll_node_t *node = calloc(1, sizeof(dll_node_t));
     DIE(!node, "malloc error");
 
@@ -47,6 +55,8 @@ dll_make_node(dll_node_t *next, dll_node_t *prev, const void *data, uint data_si
     return node;
 }
 
+/* Adauga un nod, alocand si memorie pentru el si datele retinute.
+*/
 void
 dll_add_nth_node(doubly_linked_list_t* list, uint n, const void* data)
 {
@@ -54,23 +64,28 @@ dll_add_nth_node(doubly_linked_list_t* list, uint n, const void* data)
 
     if (n > list->size)
         n = list->size;
-    
+
     if (n == 0) {
         if (!list->head) {
-            dll_node_t *new_node = dll_make_node(NULL, NULL, data, list->data_size);
+            dll_node_t *new_node = dll_make_node(NULL, NULL, data,
+            list->data_size);
             list->size++;
             list->head = new_node;
             return;
         }
         dll_node_t *node = list->head;
-        dll_node_t *new_node = dll_make_node(node, node->prev, data, list->data_size);
+        dll_node_t *new_node = dll_make_node(node, node->prev, data,
+        list->data_size);
+
         list->size++;
         list->head = new_node;
         return;
     }
 
     dll_node_t *prev_node =  dll_get_nth_node(list, n - 1);
-    dll_node_t *new_node = dll_make_node(prev_node->next, prev_node, data, list->data_size);
+    dll_node_t *new_node = dll_make_node(prev_node->next, prev_node, data,
+    list->data_size);
+
     if (prev_node->next)
         (prev_node->next)->prev = new_node;
     if (prev_node)
@@ -78,6 +93,8 @@ dll_add_nth_node(doubly_linked_list_t* list, uint n, const void* data)
     list->size++;
 }
 
+/* Elimina un nod fara a elibera memorie
+*/
 dll_node_t*
 dll_remove_nth_node(doubly_linked_list_t* list, uint n)
 {
@@ -95,7 +112,7 @@ dll_remove_nth_node(doubly_linked_list_t* list, uint n)
     }
     if (n >= list->size)
         n = list->size - 1;
-    
+
     dll_node_t *node = dll_get_nth_node(list, n);
     if (node->prev)
         (node->prev)->next = node->next;
@@ -109,6 +126,8 @@ dll_remove_nth_node(doubly_linked_list_t* list, uint n)
     return node;
 }
 
+/* Gaseste marimea unei liste prin parcurgerea ei
+*/
 uint
 dll_get_size(doubly_linked_list_t* list)
 {
@@ -123,6 +142,8 @@ dll_get_size(doubly_linked_list_t* list)
     return i;
 }
 
+/* Elibereaza memoria elementelor unei liste, nu si lista.
+*/
 void
 dll_free(doubly_linked_list_t* list)
 {
@@ -138,9 +159,11 @@ dll_free(doubly_linked_list_t* list)
     }
 }
 
-// Prints the values from node a to node b, using given function
+/* Printeaza valorile listei intre pozitile a si b, apeland o functie de printare.
+*/
 void
-dll_print_element(doubly_linked_list_t *list, uint a, uint b, void print_func(void *)) {
+dll_print_element(doubly_linked_list_t *list, uint a, uint b,
+void print_func(void *)) {
     DIE(!list, "List uninitialized\n");
 
     dll_node_t *node = dll_get_nth_node(list, a);
@@ -151,6 +174,9 @@ dll_print_element(doubly_linked_list_t *list, uint a, uint b, void print_func(vo
     }
 }
 
+/* Creaza o noua lista luand cate o carte pe rand din listele date ca
+parametri.
+*/
 doubly_linked_list_t *
 dll_merge_lists(doubly_linked_list_t *list1, doubly_linked_list_t *list2) {
     DIE(!list1, "List uninitialized\n");
@@ -160,7 +186,7 @@ dll_merge_lists(doubly_linked_list_t *list1, doubly_linked_list_t *list2) {
 
     dll_node_t *node1 = list1->head;
     dll_node_t *node2 = list2->head;
-    
+
     for (uint i = 0; node1 || node2; i++) {
         if (i % 2 == 0 && node1) {
             dll_add_nth_node(new_list, list1->size + list2->size, node1->data);
@@ -175,6 +201,8 @@ dll_merge_lists(doubly_linked_list_t *list1, doubly_linked_list_t *list2) {
     return new_list;
 }
 
+/* Inverseaza ordinea nodurilor din list
+*/
 void
 dll_reverse_list(doubly_linked_list_t *list) {
     DIE(!list, "List uninitialized\n");
@@ -190,18 +218,20 @@ dll_reverse_list(doubly_linked_list_t *list) {
     }
 }
 
+/* Sorteaza o lista, utilizand bubble sort, cu ajutorul functiei compare_func
+*/
 void
 dll_sort_list(doubly_linked_list_t *list, int compare_func(void *, void *)) {
     DIE(!list, "List uninitialized\n");
 
     dll_node_t *node = list->head;
     while (node != NULL && node->next != NULL) {
-        if (compare_func(node->data, node->next->data) < 0) {
+        if (compare_func(node->data, node->next->data) > 0) {
             SWAP(node->data, node->next->data, dll_node_t*);
             if (node->prev)
                 node = node->prev;
         } else {
-                node = node->next;
+            node = node->next;
         }
     }
 }
